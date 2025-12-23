@@ -51,6 +51,7 @@
         <div class="actions">
             <button onclick="openCartonPopup()">➕ Add Carton</button>
             <button onclick="addEntry()">➕ Add Packet Entry</button>
+            <button onclick="toggleHistoryView()">📜 View History</button>
         </div>
 
         <!-- Entries -->
@@ -65,6 +66,17 @@
         <!-- Close -->
         <div class="close">
             <button id="closeBtn" onclick="closeCarton()" disabled>✅ Close Carton</button>
+        </div>
+
+        <!-- History View -->
+        <div id="historyView" class="history-view" style="display: none;">
+            <div class="history-header">
+                <h2>📜 Carton History</h2>
+                <button onclick="toggleHistoryView()">← Back to Current</button>
+            </div>
+            <div id="historyContent" class="history-content">
+                <div class="loading-history">Loading history...</div>
+            </div>
         </div>
     </div>
 
@@ -92,6 +104,20 @@
             <button onclick="saveEntry()">Save</button>
         </div>
     </div>
+
+    <!-- Customer Ledger Popup -->
+    <div id="customerPopup" class="popup-overlay">
+        <div class="popup-box">
+            <h2 id="customerTitle">Customer Ledger</h2>
+
+            <div id="customerSummary" class="summary-box"></div>
+
+            <div id="customerHistory" class="ledger-list"></div>
+
+            <button class="close-btn" onclick="closeCustomerPopup()">Close</button>
+        </div>
+    </div>
+
 
     <script type="module" src="script.js"></script>
 </body>
