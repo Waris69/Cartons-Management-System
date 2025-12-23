@@ -80,6 +80,84 @@ input {
   gap: 8px;
 }
 
+.customer-name {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #e6f7f1;
+  color: #2d6a4f;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.customer-name.owing {
+  background: #ffe9e4;
+  color: #c2410c;
+}
+
+.customer-name:hover {
+  border-color: #4f83ff;
+}
+
+/* Customer Detail Modal */
+.customer-detail {
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.customer-summary {
+  margin-bottom: 20px;
+}
+
+.customer-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.transaction {
+  border-left: 4px solid #ccc;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.transaction.payment {
+  border-color: green;
+}
+
+.transaction small {
+  color: #777;
+}
+
+.customer-history h4 {
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.transaction {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+  background: #f7f9fc;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.transaction span {
+  text-align: center;
+  font-size: 14px;
+}
+
+.transaction span:first-child {
+  font-weight: 600;
+}
+
 /* Popup */
 .popup {
   position: fixed;
@@ -122,7 +200,259 @@ input {
   100% { transform: rotate(360deg); }
 }
 
+/* History View */
+.history-view {
+  margin-top: 20px;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.history-header h2 {
+  margin: 0;
+}
+
+.history-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.history-card {
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.history-summary {
+  margin-bottom: 12px;
+}
+
+.history-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.history-title h3 {
+  margin: 0;
+  color: #333;
+}
+
+.status {
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.status.complete {
+  background: #e6f7f1;
+  color: #2d6a4f;
+}
+
+.status.partial {
+  background: #ffe9e4;
+  color: #c2410c;
+}
+
+.history-dates {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.history-amounts {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.amount {
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.amount.total {
+  background: #f7f9fc;
+  color: #333;
+}
+
+.amount.received {
+  background: #e6f7f1;
+  color: #2d6a4f;
+}
+
+.amount.manual {
+  background: #e0f2fe;
+  color: #0277bd;
+}
+
+.amount.remaining {
+  background: #ffe9e4;
+  color: #c2410c;
+}
+
+.history-details {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e1e5e9;
+}
+
+.history-details h4 {
+  margin: 8px 0;
+  color: #333;
+}
+
+.history-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.history-entry:last-child {
+  border-bottom: none;
+}
+
+.history-entry span {
+  flex: 1;
+  text-align: center;
+}
+
+.history-entry span:first-child {
+  text-align: left;
+}
+
+.history-entry span:last-child {
+  text-align: right;
+}
+
+.toggle-details {
+  width: 100%;
+  padding: 10px;
+  background: #4f83ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.toggle-details:hover {
+  background: #3a6bd6;
+}
+
+.loading-history {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
 @media (max-width: 768px) {
   .stats { flex-direction: column; }
   .actions, .manual, .close { flex-direction: column; }
+
+  .history-header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .history-dates {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .history-amounts {
+    flex-direction: column;
+  }
+
+  .history-entry {
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
 }
+
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Popup Box */
+.popup-box {
+  background: #fff;
+  width: 95%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Ledger list */
+.ledger-list {
+  margin-top: 12px;
+}
+
+.transaction {
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.transaction.payment {
+  border-left: 4px solid #4CAF50;
+}
+
+.transaction.purchase {
+  border-left: 4px solid #2196F3;
+}
+
+.summary-box {
+  background: #f0f4f8;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.close-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+}
+
+.customer-name {
+  font-weight: 600;
+  cursor: pointer;
+}
+.customer-name:hover {
+  text-decoration: underline;
+}
+
