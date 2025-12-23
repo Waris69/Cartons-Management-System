@@ -1,241 +1,128 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    padding: 20px;
-    background: #f0f4f8;
-    font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 12px;
+  background: #f0f4f8;
+  font-family: 'Inter', sans-serif;
 }
 
 .container {
-    max-width: 900px;
-    margin: auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  max-width: 900px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .stats {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
 .stat {
-    flex: 1;
-    background: #f7f9fc;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
+  flex: 1;
+  background: #f7f9fc;
+  padding: 18px;
+  border-radius: 14px;
+  text-align: center;
 }
 
-.stat p {
-    margin: 0;
-    color: #555;
-}
+.received { background: #e6f7f1; }
+.remaining { background: #ffe9e4; }
 
-.stat h2 {
-    margin: 10px 0 0;
-    font-size: 28px;
-}
-
-.received {
-    background: #e6f7f1;
-}
-
-.remaining {
-    background: #ffe9e4;
-}
-
-.actions,
-.manual,
-.close {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
+.actions, .manual, .close {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 button {
-    background: #4f83ff;
-    color: white;
-    border: none;
-    padding: 12px 16px;
-    border-radius: 8px;
-    cursor: pointer;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #4f83ff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 button:disabled {
-    background: #cfcfcf;
-    cursor: not-allowed;
-}
-
-.entries {
-    margin-top: 20px;
-}
-
-.entry {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr auto;
-    gap: 10px;
-    margin-bottom: 10px;
+  background: #ccc;
 }
 
 input {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
 }
 
+.entries {
+  margin-top: 20px;
+}
+
+.entry {
+  background: #f7f9fc;
+  padding: 14px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+/* Popup */
 .popup {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    display: none;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
 }
 
 .popup-content {
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    width: 280px;
-    text-align: center;
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 320px;
 }
 
-.popup-content input {
-    width: 100%;
-    margin: 15px 0;
-}
-
-/* Loading overlay */
+/* Loading */
 .loading-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
-  display: flex;
-  justify-content: center;
+  inset: 0;
+  background: rgba(255,255,255,0.7);
+  display: none;
   align-items: center;
-  z-index: 9999;
+  justify-content: center;
+  z-index: 999;
 }
 
-/* Spinner style */
 .spinner {
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid #4f83ff; /* your primary blue */
-  border-radius: 50%;
   width: 40px;
   height: 40px;
+  border: 5px solid #eee;
+  border-top: 5px solid #4f83ff;
+  border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* =========================
-   📱 MOBILE-FIRST STACK UI
-   ========================= */
-
 @media (max-width: 768px) {
-
-  /* Overall spacing */
-  body {
-    padding: 12px;
-  }
-
-  .container {
-    padding: 18px;
-  }
-
-  h1 {
-    font-size: 22px;
-    margin-bottom: 20px;
-  }
-
-  /* Stack all stat sections */
-  .stats {
-    flex-direction: column;
-    gap: 14px;
-    margin-bottom: 24px;
-  }
-
-  .stat {
-    padding: 18px;
-    border-radius: 14px;
-  }
-
-  .stat p {
-    font-size: 14px;
-  }
-
-  .stat h2 {
-    font-size: 26px;
-  }
-
-  /* Actions become vertical */
-  .actions,
-  .manual,
-  .close {
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 24px;
-  }
-
-  /* Big tap-friendly buttons */
-  button {
-    width: 100%;
-    padding: 16px;
-    font-size: 16px;
-    border-radius: 12px;
-  }
-
-  /* Inputs full width */
-  input {
-    width: 100%;
-    font-size: 16px;
-    padding: 14px;
-    border-radius: 12px;
-  }
-
-  /* Packet entries as cards */
-  .entries {
-    margin-top: 24px;
-  }
-
-  .entry {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    background: #f7f9fc;
-    padding: 16px;
-    border-radius: 14px;
-  }
-
-  .entry input {
-    background: #ffffff;
-  }
-
-  /* Popup optimized for mobile */
-  .popup-content {
-    width: 92%;
-    max-width: 320px;
-    border-radius: 16px;
-  }
-}
-
-/* Extra-small phones */
-@media (max-width: 420px) {
-
-  h1 {
-    font-size: 20px;
-  }
-
-  .stat h2 {
-    font-size: 22px;
-  }
+  .stats { flex-direction: column; }
+  .actions, .manual, .close { flex-direction: column; }
 }
