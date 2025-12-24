@@ -403,11 +403,12 @@ window.openCustomerDetail = async function (name) {
     `;
 
     // Render ledger entries or fallback message
-    const ledger = customer.transactionHistory || [];
-    if (ledger.length === 0) {
+    // const ledger = customer.transactionHistory || [];
+
+    if (customer.ledger.length == 0) {
       document.getElementById("customerHistory").innerHTML = "<p>No transactions found.</p>";
     } else {
-      document.getElementById("customerHistory").innerHTML = ledger.map(tx => {
+      document.getElementById("customerHistory").innerHTML = customer.ledger.map(tx => {
         // Handle Firestore timestamp safely
         const txDate = tx.date && tx.date.seconds
           ? new Date(tx.date.seconds * 1000).toLocaleString()
@@ -420,7 +421,7 @@ window.openCustomerDetail = async function (name) {
               Packets: ${tx.packets || ''}<br>
               Amount: Rs ${tx.amount || ''}<br>
               <small>Date: ${txDate}</small><br>
-              <small>Carton ID: ${tx.cartonId || ''}</small>
+              <small>Carton ID: ${tx.cartonUid || ''}</small>
             </div>
           `;
         } else if (tx.type === 'payment') {
@@ -429,7 +430,7 @@ window.openCustomerDetail = async function (name) {
               💰 <strong>Payment</strong><br>
               Amount: Rs ${tx.amount || ''}<br>
               <small>Date: ${txDate}</small><br>
-              <small>Carton ID: ${tx.cartonId || ''}</small>
+              <small>Carton ID: ${tx.cartonUid || ''}</small>
             </div>
           `;
         } else {
@@ -521,6 +522,7 @@ function renderHistory() {
       ? new Date(cart.closeDate.seconds * 1000)
       : new Date(cart.closeDate);
 
+
     return `
       <div class="history-card">
         <div class="history-summary">
@@ -555,14 +557,20 @@ function renderHistory() {
           ${cart.entries.map(e => `
             <div class="history-entry">
               <span>${e.name}</span>
-              <span>${e.packets} packets</span>
-              <span>Rs ${e.amount}</span>
-              <span>${e.status}</span>
+              <span>${e.packets} Packets</span>
+              ${e.amount == 0 ? `<span></span>` :
+          `<span>Rs ${e.amount}</span>`
+
+        }
+              ${e.amount == 0 ? `<span>paid</span>` :
+          `<span>partial paid</span>`
+        }
             </div>
           `).join("")}
         </details>
       </div>
     `;
+
   }).join("");
 }
 
