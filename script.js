@@ -317,7 +317,7 @@ async function addDailyHistory({ type, customerName, packets = 0, amount }) {
   if (!snap.exists()) {
     await setDoc(ref, {
       date: dateId,
-      cartonNumber: state.currentCarton,
+      // cartonNumber: state.currentCarton,
       activities: [activity],
       totalPurchasedAmount: type === "purchase" ? amount : 0,
       totalCollectedAmount: type === "manual_payment" ? amount : 0
@@ -693,3 +693,4 @@ function generateLedgerId() {
 
 
 load();
+
