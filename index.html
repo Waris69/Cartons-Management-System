@@ -52,6 +52,7 @@
             <button onclick="openCartonPopup()">➕ Add Carton</button>
             <button onclick="addEntry()">➕ Add Packet Entry</button>
             <button onclick="toggleHistoryView()">📜 View History</button>
+            <button onclick="openDailyHistory()">View Daily History</button>
         </div>
 
         <!-- Entries -->
@@ -93,6 +94,15 @@
             <button onclick="saveCarton()">Save</button>
         </div>
     </div>
+
+    <div id="dailyHistoryPopup" class="popup-overlay">
+        <div class="popup-box">
+            <h2>Daily History</h2>
+            <div id="dailyHistoryContent"></div>
+            <button onclick="closeDailyHistory()">Close</button>
+        </div>
+    </div>
+
 
     <!-- Packet Entry Popup -->
     <div class="popup" id="entryPopup">
