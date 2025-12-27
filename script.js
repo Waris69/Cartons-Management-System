@@ -1,5 +1,18 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, addDoc, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  addDoc,
+  updateDoc,
+  collection,
+  query,
+  orderBy,
+  getDocs,
+  arrayUnion,
+  increment
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 import { ENV } from "./env.js";
 
 const app = initializeApp(ENV);
@@ -153,6 +166,13 @@ window.saveEntry = async () => {
     state.entries.push(entry);
     state.allEntries.push(entry);
 
+    await addDailyHistory({
+      type: "purchase",
+      customerName: name,
+      packets: packets,
+      amount: amount
+    });
+
     await updateCustomerLedger({
       name,
       type: "purchase",
@@ -195,6 +215,12 @@ window.pay = async (index) => {
     cartonUid: `CRT-${String(state.lifetimeCartons + 1).padStart(6, "0")}`
   });
 
+  await addDailyHistory({
+    type: "payment",
+    customerName: entry.name,
+    amount: amount
+  });
+
   if (entry.amount === 0) {
     state.entries.splice(index, 1);
   }
@@ -211,6 +237,13 @@ window.manualReceive = async () => {
   state.received += amt;
   state.manualReceived += amt;
 
+  await addDailyHistory({
+    type: "manual_payment",
+    customerName: "MANUAL",
+    amount: amt
+  });
+
+
   await updateCustomerLedger({
     name: "MANUAL",
     type: "payment",
@@ -221,6 +254,82 @@ window.manualReceive = async () => {
   manualAmount.value = "";
   save();
 };
+
+window.closeDailyHistory = function () {
+  document.getElementById("dailyHistoryPopup").style.display = "none";
+};
+
+
+window.openDailyHistory = async function () {
+  const todayId = new Date().toISOString().split("T")[0];
+  const ref = doc(db, "dailyHistory", todayId);
+  const snap = await getDoc(ref);
+
+  const container = document.getElementById("dailyHistoryContent");
+
+  if (!snap.exists()) {
+    container.innerHTML = "<p>No activity today.</p>";
+  } else {
+    const data = snap.data();
+
+    let html = `
+      <p><strong>Total Purchased:</strong> Rs ${data.totalPurchasedAmount}</p>
+      <p><strong>Total Collected:</strong> Rs ${data.totalCollectedAmount}</p>
+      <hr/>
+    `;
+
+    data.activities.forEach(act => {
+      html += `
+        <div class="transaction">
+          ${act.type === "purchase" ? "🛒 Purchase" : "💰 Payment"}<br/>
+          <strong>${act.customerName}</strong><br/>
+          Amount: Rs ${act.amount}<br/>
+          ${act.packets ? `Packets: ${act.packets}<br/>` : ""}
+          Time: ${act.time}
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+  }
+
+  document.getElementById("dailyHistoryPopup").style.display = "flex";
+}
+
+
+async function addDailyHistory({ type, customerName, packets = 0, amount }) {
+  const today = new Date();
+  const dateId = today.toISOString().split("T")[0]; // YYYY-MM-DD
+  const time = today.toLocaleTimeString();
+
+  const ref = doc(db, "dailyHistory", dateId);
+  const snap = await getDoc(ref);
+
+
+  const activity = {
+    type,
+    customerName,
+    packets,
+    amount,
+    time
+  };
+
+  if (!snap.exists()) {
+    await setDoc(ref, {
+      date: dateId,
+      cartonNumber: state.currentCarton,
+      activities: [activity],
+      totalPurchasedAmount: type === "purchase" ? amount : 0,
+      totalCollectedAmount: type === "manual_payment" ? amount : 0
+    });
+  } else {
+    await updateDoc(ref, {
+      activities: arrayUnion(activity),
+      totalPurchasedAmount: increment(type === "purchase" ? amount : 0),
+      totalCollectedAmount: increment(type === "manual_payment" ? amount : 0)
+    });
+  }
+}
 
 
 window.closeCarton = async () => {
@@ -263,6 +372,9 @@ window.closeCarton = async () => {
       version: 1
     }
   };
+
+  const todayId = new Date().toISOString().split("T")[0];
+  await deleteDoc(doc(db, "dailyHistory", todayId));
 
   // 🔐 Save immutable history
   await addDoc(collection(db, "cartonHistory"), historyPayload);
