@@ -4,6 +4,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  deleteDoc,
   addDoc,
   updateDoc,
   collection,
@@ -693,4 +694,5 @@ function generateLedgerId() {
 
 
 load();
+
 
